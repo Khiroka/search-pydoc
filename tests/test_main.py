@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from src.main import SearchDocModule
+from src.main import SearchDocModule, main
 
 
 class TestMain(TestCase):
@@ -20,10 +20,14 @@ class TestMain(TestCase):
         response = SearchDocModule("abc").check_doc_url()
         self.assertEqual(response.status_code, 200)
 
-    def test_main_failure(self):
-        result = SearchDocModule(1).main()
+    def test_main_failure_int(self):
+        result = main(100)
+        self.assertEqual(result, "NG")
+
+    def test_main_failure_404(self):
+        result = main("none")
         self.assertEqual(result, "NG")
 
     def test_main_success(self):
-        result = SearchDocModule("abc").main()
+        result = main("abc")
         self.assertEqual(result, "OK")
