@@ -14,6 +14,78 @@ slack_events_adapter = SlackEventAdapter(slack_signing_secret, "/slack/events", 
 slack_bot_token = os.environ["PYDOC_TOKEN"]
 slack_client = WebClient(slack_bot_token)
 
+functions = {
+    "abs": "abs",
+    "delattr": "delattr",
+    "hash": "hash",
+    "memoryview": "func-memoryview",
+    "set": "func-set",
+    "all": "all",
+    "dict": "func-dict",
+    "help": "help",
+    "min": "min",
+    "setattr": "setattr",
+    "any": "any",
+    "dir": "dir",
+    "hex": "hex",
+    "next": "next",
+    "slice": "slice",
+    "ascii": "ascii",
+    "divmod": "divmod",
+    "id": "id",
+    "object": "object",
+    "sorted": "sorted",
+    "bin": "bin",
+    "enumerate": "enumerate",
+    "input": "input",
+    "oct": "oct",
+    "staticmethod": "staticmethod",
+    "bool": "bool",
+    "eval": "eval",
+    "int": "int",
+    "open": "open",
+    "str": "func-str",
+    "breakpoint": "breakpoint",
+    "exec": "exec",
+    "isinstance": "isinstance",
+    "ord": "ord",
+    "sum": "sum",
+    "bytearray": "bytearray",
+    "filter": "filter",
+    "issubclass": "issubclass",
+    "pow": "pow",
+    "super": "super",
+    "bytes": "bytes",
+    "float": "float",
+    "iter": "iter",
+    "print": "print",
+    "tuple": "func-tuple",
+    "callable": "callable",
+    "format": "format",
+    "len": "len",
+    "property": "property",
+    "type": "type",
+    "chr": "chr",
+    "frozenset": "func-frozenset",
+    "list": "func-list",
+    "range": "func-range",
+    "vars": "vars",
+    "classmethod": "classmethod",
+    "getattr": "getattr",
+    "locals": "locals",
+    "repr": "repr",
+    "zip": "zip",
+    "compile": "compile",
+    "globals": "globals",
+    "map": "map",
+    "reversed": "reversed",
+    "__import__": "__import__",
+    "complex": "complex",
+    "hasattr": "hasattr",
+    "max": "max",
+    "round": "round",
+}
+
 
 class SearchDocModule:
     def __init__(self, module_name):
@@ -43,10 +115,16 @@ def main(event_data):
             print("success", status_code)
             slack_client.chat_postMessage(channel=channel, text=sdm.url)
         else:
-            print("statucode not 200", status_code)
-            slack_client.chat_postMessage(
-                channel=channel, text="The module name is incorrect"
-            )
+            if text in functions:
+                slack_client.chat_postMessage(
+                    channel=channel,
+                    text=f"https://docs.python.org/ja/3/library/functions.html#{functions[text]}",
+                )
+            else:
+                print("not match module")
+                slack_client.chat_postMessage(
+                    channel=channel, text="The module name is incorrect"
+                )
     # else:
     #     print("not match")
     #     slack_client.chat_postMessage(
