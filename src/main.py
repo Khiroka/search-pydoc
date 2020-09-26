@@ -3,6 +3,7 @@ import os
 from flask import Flask
 import requests
 import slack
+from slackeventsapi import SlackEventAdapter
 
 app = Flask(__name__)
 
@@ -21,18 +22,22 @@ class SearchDocModule:
         return response
 
 
-@app.route("/search-doc")
+slack_events_adapter = SlackEventAdapter(os.environ["SIGINING"], "/search/docs", app)
+
+
+@slack_events_adapter.on("message")
 def main(request):
-    sdm = SearchDocModule(request)
+    app.logger.debug(request)
+    # sdm = SearchDocModule(request)
 
-    if not sdm.check_str():
-        return "NG"
+    # if not sdm.check_str():
+    #     return "NG"
 
-    if sdm.check_doc_url().status_code == 200:
-        return "OK"
-    else:
-        return "NG"
+    # if sdm.check_doc_url().status_code == 200:
+    #     return "OK"
+    # else:
+    #     return "NG"
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5000)
