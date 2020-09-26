@@ -1,7 +1,10 @@
 import os
 
+from flask import Flask
 import requests
 import slack
+
+app = Flask(__name__)
 
 
 class SearchDocModule:
@@ -17,13 +20,19 @@ class SearchDocModule:
         response = requests.get(self.url)
         return response
 
-    def main(self):
-        if not self.check_str():
-            return "NG"
 
-        if self.check_doc_url().status_code == 200:
-            return "OK"
+@app.route("/search-doc")
+def main(request):
+    sdm = SearchDocModule(request)
+
+    if not sdm.check_str():
+        return "NG"
+
+    if sdm.check_doc_url().status_code == 200:
+        return "OK"
+    else:
+        return "NG"
 
 
 if __name__ == "__main__":
-    pass
+    app.run(debug=True)
