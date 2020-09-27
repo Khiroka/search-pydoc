@@ -139,4 +139,7 @@ dmypy.json
 .pytype/
 
 .DS_Store
+.vscode
+ngrok
+functions.json
 # End of https://www.toptal.com/developers/gitignore/api/python
