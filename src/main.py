@@ -46,4 +46,4 @@ def main(event_data):
 
 
 if __name__ == "__main__":
-    app.run(port=5000)
+    app.run()
