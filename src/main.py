@@ -1,9 +1,7 @@
 import os
 import re
-from pprint import pprint
 
 from flask import Flask
-import requests
 from slack import WebClient
 from slackeventsapi import SlackEventAdapter
 
