@@ -9,7 +9,7 @@ click
 flake8
 Flask
 idna
-itsdangerous0
+itsdangerous
 Jinja2
 MarkupSafe
 mccabe
