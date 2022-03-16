@@ -1,5 +1,6 @@
 import os
 import re
+from pprint import pprint
 
 from flask import Flask
 from slack import WebClient
@@ -32,6 +33,7 @@ def block_format(matches):
 
 @slack_events_adapter.on("message")
 def main(event_data):
+    pprint(event_data)
     message = event_data["event"]
     channel = message["channel"]
 
